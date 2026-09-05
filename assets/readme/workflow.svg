@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="264" viewBox="0 0 1200 264"
+     role="img" aria-labelledby="title desc"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">leetcode-to-github 工作流程</title>
+  <desc id="desc">五个阶段：粘贴题目与代码、分析正确性与复杂度、生成题解目录、自动更新索引、确认后按规范提交；底部注明安全边界：代码原样保存、展示修改后等待确认、默认不自动 push。</desc>
+
+  <rect width="1200" height="264" rx="26" fill="#0d1117"/>
+
+  <g id="stages" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace">
+    <g id="stage-1">
+      <rect x="56" y="56" width="182" height="132" rx="12" fill="#161b22" stroke="#30363d"/>
+      <text x="74" y="86" font-size="16" font-weight="700" fill="#ffa116">01</text>
+      <text x="74" y="118" font-size="20" font-weight="700" fill="#e6edf3"
+            font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">粘贴题目</text>
+      <text x="74" y="150" font-size="18" fill="#8b949e">编号 / 链接</text>
+      <text x="74" y="174" font-size="18" fill="#8b949e">+ 我的代码</text>
+    </g>
+    <g id="stage-2">
+      <rect x="282" y="56" width="182" height="132" rx="12" fill="#161b22" stroke="#30363d"/>
+      <text x="300" y="86" font-size="16" font-weight="700" fill="#ffa116">02</text>
+      <text x="300" y="118" font-size="20" font-weight="700" fill="#e6edf3"
+            font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">分析代码</text>
+      <text x="300" y="150" font-size="18" fill="#8b949e">正确性·思路</text>
+      <text x="300" y="174" font-size="18" fill="#8b949e">复杂度·易错点</text>
+    </g>
+    <g id="stage-3">
+      <rect x="508" y="56" width="182" height="132" rx="12" fill="#161b22" stroke="#30363d"/>
+      <text x="526" y="86" font-size="16" font-weight="700" fill="#ffa116">03</text>
+      <text x="526" y="118" font-size="20" font-weight="700" fill="#e6edf3"
+            font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">生成题解</text>
+      <text x="526" y="150" font-size="18" fill="#8b949e">README.md</text>
+      <text x="526" y="174" font-size="18" fill="#8b949e">solution.cpp</text>
+    </g>
+    <g id="stage-4">
+      <rect x="734" y="56" width="182" height="132" rx="12" fill="#161b22" stroke="#30363d"/>
+      <text x="752" y="86" font-size="16" font-weight="700" fill="#ffa116">04</text>
+      <text x="752" y="118" font-size="20" font-weight="700" fill="#e6edf3"
+            font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">更新索引</text>
+      <text x="752" y="150" font-size="18" fill="#8b949e">README 表格</text>
+      <text x="752" y="174" font-size="18" fill="#8b949e">自动追加新题</text>
+    </g>
+    <g id="stage-5">
+      <rect x="960" y="56" width="182" height="132" rx="12" fill="#161b22" stroke="#30363d"/>
+      <text x="978" y="86" font-size="16" font-weight="700" fill="#ffa116">05</text>
+      <text x="978" y="118" font-size="20" font-weight="700" fill="#e6edf3"
+            font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">确认后提交</text>
+      <text x="978" y="150" font-size="18" fill="#8b949e">git commit</text>
+      <text x="978" y="174" font-size="18" fill="#8b949e">明确后才 push</text>
+    </g>
+  </g>
+
+  <g id="arrows" fill="none" stroke="#8b949e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 251 114 L 263 122 L 251 130"/>
+    <path d="M 477 114 L 489 122 L 477 130"/>
+    <path d="M 703 114 L 715 122 L 703 130"/>
+    <path d="M 929 114 L 941 122 L 929 130"/>
+  </g>
+
+  <text x="600" y="234" text-anchor="middle"
+        font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace"
+        font-size="18" fill="#8b949e">安全边界 —— 代码原样保存 · 展示修改后等你确认 · auto_push 默认关闭</text>
+</svg>

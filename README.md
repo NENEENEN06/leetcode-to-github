@@ -1,79 +1,56 @@
-# leetcode-to-github
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="leetcode-to-github：把 LeetCode 题目和代码整理成规范中文题解并提交到 GitHub 的 Agent Skill，支持 npx 一键安装">
+</p>
 
-把 LeetCode 题目和代码整理成规范、可长期复习的中文 Markdown 题解，保存到本地 Git 仓库并提交到 GitHub 的 Agent Skill。
+## 它是什么
 
-## 目录结构
+一个 Agent Skill（Codex / Claude Code 等主流 Agent 通用）。你只管刷题——把题号和代码发给 Agent，它负责分析你的代码、按统一模板撰写中文题解、更新题目索引，并在你确认后提交到 GitHub 仓库。
+
+## 会得到什么
+
+每道题生成一个独立目录；题解包含题目、我的思路、代码、代码分析、复杂度、易错点、总结、复盘；根目录索引由脚本自动维护。
 
 ```text
-leetcode-to-github/
-├── SKILL.md                 Skill 行为、工作流程、分析规则与 GitHub 操作规则
-├── config.yaml             仓库、目录、文档、Git 与语言扩展名配置（无敏感信息）
-├── README.md               本文件：安装、配置与使用说明
-├── package.json            npm 包元数据，供 npx 安装使用
-├── cli.js                  npx 入口：把技能文件安装到 Agent 的 skills 目录
-├── templates/
-│   ├── solution.md         单题题解模板
-│   └── index.md            仓库根目录索引模板
-├── references/
-│   ├── algorithms.md       常见算法模式参考
-│   └── complexity.md       复杂度分析参考
-└── scripts/
-    ├── validate.py         校验目录/README/敏感信息/重复题号
-    └── generate_index.py   生成/更新根目录题目索引
+leetcode-solutions/
+├── 0001-two-sum/
+│   ├── README.md        题解：思路 · 代码分析 · 复杂度 · 复盘
+│   └── solution.cpp     你的原始代码，原样保存
+├── 0053-maximum-subarray/
+│   ├── README.md
+│   └── solution.cpp
+└── README.md            题目索引（脚本自动更新）
 ```
 
-## 各文件作用
+## 工作流程
 
-| 文件 | 作用 |
-|---|---|
-| `SKILL.md` | 定义 Agent 触发后的行为：收集信息、分析用户代码、生成题解、防重复、提交推送等完整流程与安全边界 |
-| `config.yaml` | 配置仓库 owner/name、本地路径、目录命名、文档语言、commit 模板、`auto_push` 等；用占位符，不硬编码 Token |
-| `package.json` | npm 包元数据、`bin` 入口，使技能可用 `npx` 安装 |
-| `cli.js` | npx 入口脚本：把技能文件安装到 Agent 的 skills 目录 |
-| `templates/solution.md` | 单题 `README.md` 模板，包含题目、我的思路、代码、代码分析、复杂度、易错点、总结、复盘 |
-| `templates/index.md` | 仓库根 `README.md` 模板，带 `<!-- leetcode-index:start/end -->` 标记供脚本更新 |
-| `references/algorithms.md` | 双指针、滑动窗口、二分、DP、DFS/BFS、栈、链表、树、图、贪心、前缀和、位运算等模式识别参考 |
-| `references/complexity.md` | 时间/空间复杂度估算规范与常见来源 |
-| `scripts/validate.py` | 校验目录命名、README 段落、solution 文件、重复题号、敏感信息、Markdown 围栏 |
-| `scripts/generate_index.py` | 扫描题目目录并生成/更新根目录 README 的 Problems 表格 |
+<p align="center">
+  <img src="./assets/readme/workflow.svg" width="100%" alt="工作流程：粘贴题目与代码 → 分析正确性与复杂度 → 生成题解目录 → 更新索引 → 确认后按规范提交；代码原样保存、默认不自动 push">
+</p>
 
-## 安装
+## 快速开始
 
-用 npx 从 GitHub 一键安装，自动装到所用 Agent 的 skills 目录：
+### 1. 安装
+
+用 npx 从 GitHub 一键安装，自动检测已安装的 Agent（优先 Codex），装到对应 skills 目录：
 
 ```bash
 npx github:NENEENEN06/leetcode-to-github
 ```
 
-自动检测已安装的 Agent（优先 Codex），装到对应目录：
-
 - Codex：`$CODEX_HOME/skills/leetcode-to-github`（默认 `~/.codex/skills/...`）
 - Claude Code：`$CLAUDE_CONFIG_DIR/skills/leetcode-to-github`（默认 `~/.claude/skills/...`）
 
-**指定 Agent：**
+指定 Agent，或装到任意目录（任何 Agent 通用）：
 
 ```bash
 npx github:NENEENEN06/leetcode-to-github --agent codex
 npx github:NENEENEN06/leetcode-to-github --agent claude
-```
-
-**任意目录（任何 Agent 通用）：**
-
-```bash
 npx github:NENEENEN06/leetcode-to-github --dest <该 Agent 的 skills 目录>
 ```
 
-如果检测到已存在旧安装，会先备份再覆盖。
+检测到旧安装会先备份再覆盖。安装后重启对应 Agent，提及 `leetcode-to-github` 即可触发（Codex 亦可写 `$leetcode-to-github`）。`SKILL.md` 采用 `name`/`description` 通用格式，主流 Agent 都能识别。本地调试可在仓库根目录运行 `node cli.js`。
 
-安装后重启对应 Agent，直接提及技能名 `leetcode-to-github` 即可触发（Codex 亦可写 `$leetcode-to-github`）。`SKILL.md` 采用 `name`/`description` 通用格式，Codex 与 Claude Code 等主流 Agent 都能识别。
-
-**本地调试（在仓库根目录）：**
-
-```bash
-node cli.js
-```
-
-## 配置
+### 2. 配置
 
 编辑 [config.yaml](config.yaml)，至少填好：
 
@@ -88,61 +65,58 @@ repository:
 
 不要把 GitHub Token、密码写进 `config.yaml`。认证交给 `git` 凭据助手或 `gh auth login`。
 
-## 连接 GitHub
+### 3. 连接 GitHub
 
 1. 在 GitHub 上创建一个空仓库，例如 `leetcode-solutions`。
-2. 克隆到本地并填写 `config.yaml` 的 `local_path`：
+2. 克隆到本地，并把路径填进 `config.yaml` 的 `local_path`：
 
    ```bash
    git clone https://github.com/<你的用户名>/leetcode-solutions.git
    ```
 
-3. 用以下任一方式完成认证：
+3. 用任一方式完成认证：
    - 已安装 GitHub CLI：`gh auth login`（推荐）
-   - 或配置 Git 凭据助手：`git config --global credential.helper store` 后首次 push 输入 Token
+   - 或配置凭据助手：`git config --global credential.helper store`，首次 push 时输入 Token
 
 之后 Agent 会先在 `local_path` 目录里核对 `git remote -v` 与分支，再执行提交。
 
-## 第一次测试
+### 4. 第一次使用
 
-1. 装好 skill 并填好 `config.yaml`。
-2. 准备一个本地仓库（可为空克隆）。
-3. 对 Agent 说：
+装好 skill、填好 `config.yaml`、准备一个本地仓库（可为空克隆），然后对 Agent 说：
 
-   ```
-   整理 LeetCode 53
-   我的代码：
-   ```cpp
-   class Solution {
-   public:
-       int maxSubArray(vector<int>& nums) {
-           int cur = nums[0], best = nums[0];
-           for (int i = 1; i < nums.size(); ++i) {
-               cur = max(nums[i], cur + nums[i]);
-               best = max(best, cur);
-           }
-           return best;
-       }
-   };
-   ```
-   ```
+````text
+整理 LeetCode 53
+我的代码：
+```cpp
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int cur = nums[0], best = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {
+            cur = max(nums[i], cur + nums[i]);
+            best = max(best, cur);
+        }
+        return best;
+    }
+};
+```
+````
 
-4. Agent 会生成 `0053-maximum-subarray/README.md` 和 `solution.cpp`，更新根索引，展示修改并等待确认。
-5. 运行校验脚本确认：
+Agent 会生成 `0053-maximum-subarray/README.md` 和 `solution.cpp`，更新根索引，展示修改并等待你确认。可以运行校验脚本复核：
 
-   ```bash
-   python scripts/validate.py --repo <仓库路径> --config config.yaml
-   ```
+```bash
+python scripts/validate.py --repo <仓库路径> --config config.yaml
+```
 
-## 使用示例
+## 更多用法
 
-**单题，仅整理（不提交）：**
+**仅整理（不提交）：**
 
 > 整理 LeetCode 1，代码：...（粘贴代码）
 
-Agent 生成 `0001-two-sum/`，更新索引，展示修改，等待你确认后才 commit，且默认不 push。
+Agent 生成 `0001-two-sum/`，更新索引，展示修改，等你确认后才 commit，且默认不 push。
 
-**单题，整理并提交：**
+**整理并提交：**
 
 > 整理并提交 LeetCode 206，代码：...
 
@@ -160,7 +134,7 @@ Agent 完成检查后直接 commit（不 push，除非 `auto_push: true` 或你�
 > LeetCode 206
 > 代码：...
 
-Agent 依次生成三个目录，最后汇总：
+Agent 逐题生成，最后汇总：
 
 ```text
 本次整理：
@@ -173,15 +147,15 @@ Agent 依次生成三个目录，最后汇总：
 
 **更新已存在的题：**
 
-如果 `0053-maximum-subarray/` 已存在，Agent 会先告诉你已存在，并列出文件和检测到的新代码，询问"是否更新现有解法？"，确认后才修改，使用 `refactor(leetcode): improve 0053 maximum subarray` 作为提交信息。
+如果 `0053-maximum-subarray/` 已存在，Agent 会先列出已有文件和检测到的新代码，询问"是否更新现有解法？"，确认后才修改，提交信息为 `refactor(leetcode): improve 0053 maximum subarray`。
 
-## 脚本用法
+## 脚本
 
 ```bash
-# 校验仓库结构
+# 校验目录命名、README 段落、solution 文件、重复题号、敏感信息
 python scripts/validate.py --repo <仓库路径> --config config.yaml
 
-# 生成/更新根目录索引
+# 生成 / 更新根目录题目索引
 python scripts/generate_index.py --repo <仓库路径> --config config.yaml
 ```
 
@@ -190,6 +164,26 @@ python scripts/generate_index.py --repo <仓库路径> --config config.yaml
 ## 安全说明
 
 - 默认 `auto_push: false`，只有明确说"推送 / 提交到 GitHub"才 push。
-- 用户代码原样保存，不修改、不替换；README 记录用户真实解法。
-- 只有实际运行过代码才声称"通过编译/测试"；否则如实写"无法确定"。
-- 提交前用 `validate.py` 检查敏感信息，不提交 Token/密钥/密码。
+- 用户代码原样保存，不修改、不替换；题解记录你的真实解法。
+- 只有实际运行过代码才声称"通过编译/测试"，否则如实写"无法确定"。
+- 提交前用 `validate.py` 检查敏感信息，不提交 Token / 密钥 / 密码。
+
+## 仓库结构
+
+```text
+leetcode-to-github/
+├── SKILL.md              Skill 行为、工作流程、分析规则与 GitHub 操作规则
+├── config.yaml           仓库、目录、文档、Git 与语言扩展名配置（无敏感信息）
+├── package.json          npm 包元数据，供 npx 安装使用
+├── cli.js                npx 入口：把技能文件安装到 Agent 的 skills 目录
+├── templates/
+│   ├── solution.md       单题题解模板
+│   └── index.md          仓库根目录索引模板
+├── references/
+│   ├── algorithms.md     双指针、滑动窗口、二分、DP、DFS/BFS 等模式参考
+│   └── complexity.md     复杂度分析参考
+├── scripts/
+│   ├── validate.py       校验目录 / README / 敏感信息 / 重复题号
+│   └── generate_index.py 生成 / 更新根目录题目索引
+└── assets/readme/        README 视觉素材
+```
