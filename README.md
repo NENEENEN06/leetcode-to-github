@@ -1,6 +1,6 @@
 # leetcode-to-github
 
-把 LeetCode 题目和代码整理成规范、可长期复习的中文 Markdown 题解，保存到本地 Git 仓库并提交到 GitHub 的 Codex Agent Skill。
+把 LeetCode 题目和代码整理成规范、可长期复习的中文 Markdown 题解，保存到本地 Git 仓库并提交到 GitHub 的 Agent Skill。
 
 ## 目录结构
 
@@ -9,6 +9,8 @@ leetcode-to-github/
 ├── SKILL.md                 Skill 行为、工作流程、分析规则与 GitHub 操作规则
 ├── config.yaml             仓库、目录、文档、Git 与语言扩展名配置（无敏感信息）
 ├── README.md               本文件：安装、配置与使用说明
+├── package.json            npm 包元数据，供 npx 安装使用
+├── cli.js                  npx 入口：把技能文件安装到 Agent 的 skills 目录
 ├── templates/
 │   ├── solution.md         单题题解模板
 │   └── index.md            仓库根目录索引模板
@@ -26,6 +28,8 @@ leetcode-to-github/
 |---|---|
 | `SKILL.md` | 定义 Agent 触发后的行为：收集信息、分析用户代码、生成题解、防重复、提交推送等完整流程与安全边界 |
 | `config.yaml` | 配置仓库 owner/name、本地路径、目录命名、文档语言、commit 模板、`auto_push` 等；用占位符，不硬编码 Token |
+| `package.json` | npm 包元数据、`bin` 入口，使技能可用 `npx` 安装 |
+| `cli.js` | npx 入口脚本：把技能文件安装到 Agent 的 skills 目录 |
 | `templates/solution.md` | 单题 `README.md` 模板，包含题目、我的思路、代码、代码分析、复杂度、易错点、总结、复盘 |
 | `templates/index.md` | 仓库根 `README.md` 模板，带 `<!-- leetcode-index:start/end -->` 标记供脚本更新 |
 | `references/algorithms.md` | 双指针、滑动窗口、二分、DP、DFS/BFS、栈、链表、树、图、贪心、前缀和、位运算等模式识别参考 |
@@ -35,19 +39,39 @@ leetcode-to-github/
 
 ## 安装
 
-把整个 `leetcode-to-github` 目录复制到 Codex 的 skills 目录即可：
+用 npx 从 GitHub 一键安装，自动装到所用 Agent 的 skills 目录：
 
 ```bash
-# macOS / Linux
-cp -r leetcode-to-github ~/.codex/skills/
-
-# Windows PowerShell
-Copy-Item -Recurse -Force leetcode-to-github "$env:USERPROFILE\.codex\skills\leetcode-to-github"
+npx github:NENEENEN06/leetcode-to-github
 ```
 
-如果已经设置了 `CODEX_HOME`，则安装到 `$CODEX_HOME/skills/leetcode-to-github`。
+自动检测已安装的 Agent（优先 Codex），装到对应目录：
 
-安装后，对 Codex 说"整理 LeetCode 53"或 `$leetcode-to-github` 即可触发。
+- Codex：`$CODEX_HOME/skills/leetcode-to-github`（默认 `~/.codex/skills/...`）
+- Claude Code：`$CLAUDE_CONFIG_DIR/skills/leetcode-to-github`（默认 `~/.claude/skills/...`）
+
+**指定 Agent：**
+
+```bash
+npx github:NENEENEN06/leetcode-to-github --agent codex
+npx github:NENEENEN06/leetcode-to-github --agent claude
+```
+
+**任意目录（任何 Agent 通用）：**
+
+```bash
+npx github:NENEENEN06/leetcode-to-github --dest <该 Agent 的 skills 目录>
+```
+
+如果检测到已存在旧安装，会先备份再覆盖。
+
+安装后重启对应 Agent，直接提及技能名 `leetcode-to-github` 即可触发（Codex 亦可写 `$leetcode-to-github`）。`SKILL.md` 采用 `name`/`description` 通用格式，Codex 与 Claude Code 等主流 Agent 都能识别。
+
+**本地调试（在仓库根目录）：**
+
+```bash
+node cli.js
+```
 
 ## 配置
 
@@ -83,7 +107,7 @@ repository:
 
 1. 装好 skill 并填好 `config.yaml`。
 2. 准备一个本地仓库（可为空克隆）。
-3. 对 Codex 说：
+3. 对 Agent 说：
 
    ```
    整理 LeetCode 53

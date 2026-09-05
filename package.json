@@ -1,0 +1,38 @@
+{
+  "name": "leetcode-to-github",
+  "version": "1.0.0",
+  "description": "把 LeetCode 题目和代码整理成规范、可长期复习的中文 Markdown 题解，保存到本地 Git 仓库并提交到 GitHub 的 Agent Skill。",
+  "type": "commonjs",
+  "bin": {
+    "leetcode-to-github": "cli.js"
+  },
+  "main": "cli.js",
+  "files": [
+    "SKILL.md",
+    "config.yaml",
+    "README.md",
+    "templates",
+    "references",
+    "scripts",
+    "agents",
+    "cli.js"
+  ],
+  "keywords": [
+    "leetcode",
+    "codex",
+    "skill",
+    "markdown",
+    "github"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NENEENEN06/leetcode-to-github.git"
+  },
+  "scripts": {
+    "test": "node cli.js --help"
+  }
+}
