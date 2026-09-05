@@ -1,0 +1,3 @@
+interface:
+  display_name: "LeetCode to GitHub"
+  short_description: "整理 LeetCode 题解并推送到 GitHub 仓库"

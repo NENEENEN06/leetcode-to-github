@@ -1,0 +1,32 @@
+# leetcode-to-github 配置
+# 请按需填写；不要把 GitHub Token、密码等敏感信息写在这里。
+
+repository:
+  owner: YOUR_GITHUB_USERNAME   # GitHub 用户名，仅用于展示/核对
+  name: leetcode-solutions      # 仓库名
+  root: ""                      # 题解存放的子目录；默认 "" 表示仓库根目录
+  local_path: ""                # 本地克隆路径，例如 C:/Users/you/leetcode-solutions；留空则默认当前目录
+  default_branch: main
+
+structure:
+  directory: "{number}-{slug}"        # 单题目录名，{number}=四位题号，{slug}=kebab-case 标题
+  solution_file: "solution.{extension}"  # 代码文件名
+  readme_file: "README.md"            # 单题 README 文件名
+  index_file: "README.md"             # 根目录索引文件名
+
+documentation:
+  language: "zh-CN"
+  include_difficulty: true
+  include_topics: true
+  include_review: true
+
+git:
+  commit_template: "feat(leetcode): add {number} {title}"
+  update_commit_template: "refactor(leetcode): improve {number} {title}"
+  auto_push: false
+
+extensions:
+  cpp: cpp
+  python: py
+  java: java
+  javascript: js
